@@ -18,12 +18,12 @@
     "@worldcoin/minikit-react": "latest",
     "clsx": "^2.1.1",
     "iconoir-react": "^7.11.0",
-    "next": "13.5.6",
-    "next-auth": "^5.0.0-beta.25",
+    "next": "13.4.19",
+    "next-auth": "^4.24.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwind-merge": "^3.2.0",
-    "viem": "2.23.5"
+    "viem": "^2.23.5"
   },
   "devDependencies": {
     "@types/node": "20.11.19",
@@ -31,7 +31,7 @@
     "@types/react-dom": "18.2.19",
     "autoprefixer": "10.4.17",
     "eslint": "8.56.0",
-    "eslint-config-next": "13.5.6",
+    "eslint-config-next": "13.4.19",
     "postcss": "8.4.35",
     "tailwindcss": "3.4.1",
     "typescript": "5.3.3"
