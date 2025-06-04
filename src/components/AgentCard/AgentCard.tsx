@@ -1,43 +1,65 @@
-import { clsx } from 'clsx';
+'use client';
 
-export interface AgentCardProps {
-  id: string;
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+interface Agent {
+  id: number;
   name: string;
   description: string;
   price: number;
-  creator: string;
-  className?: string;
-  onViewDetails?: (id: string) => void;
+  category: string;
+  rating: number;
+  image: string;
 }
 
-export function AgentCard({
-  id,
-  name,
-  description,
-  price,
-  creator,
-  className,
-  onViewDetails
-}: AgentCardProps) {
+interface AgentCardProps {
+  agent: Agent;
+}
+
+export function AgentCard({ agent }: AgentCardProps) {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/marketplace/${agent.id}`);
+  };
+
   return (
-    <div
-      className={clsx(
-        'border rounded-lg p-6 hover:shadow-lg transition-shadow',
-        className
-      )}
+    <div 
+      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={handleClick}
     >
-      <h2 className="text-xl font-semibold mb-2">{name}</h2>
-      <p className="text-gray-600 mb-4">{description}</p>
-      <div className="flex justify-between items-center">
-        <span className="text-lg font-medium">{price} ETH</span>
-        <button
-          onClick={() => onViewDetails?.(id)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-        >
-          View Details
-        </button>
+      <div className="relative h-48 w-full">
+        <Image
+          src={agent.image}
+          alt={agent.name}
+          fill
+          className="object-cover"
+        />
       </div>
-      <p className="text-sm text-gray-500 mt-2">Created by: {creator}</p>
+      
+      <div className="p-4">
+        <div className="flex justify-between items-start mb-2">
+          <h3 className="text-xl font-semibold">{agent.name}</h3>
+          <span className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">
+            {agent.category}
+          </span>
+        </div>
+        
+        <p className="text-gray-600 mb-4 line-clamp-2">
+          {agent.description}
+        </p>
+        
+        <div className="flex justify-between items-center">
+          <div className="flex items-center">
+            <span className="text-yellow-400 mr-1">★</span>
+            <span className="text-sm text-gray-600">{agent.rating}</span>
+          </div>
+          <div className="text-lg font-semibold text-blue-600">
+            {agent.price} ETH
+          </div>
+        </div>
+      </div>
     </div>
   );
 } 

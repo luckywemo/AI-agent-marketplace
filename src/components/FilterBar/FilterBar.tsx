@@ -1,3 +1,5 @@
+'use client';
+
 import { clsx } from 'clsx';
 
 export interface FilterOptions {
@@ -7,72 +9,69 @@ export interface FilterOptions {
 }
 
 interface FilterBarProps {
-  onFilterChange: (filters: FilterOptions) => void;
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+  priceRange: [number, number];
+  onPriceRangeChange: (range: [number, number]) => void;
   className?: string;
 }
 
 const categories = [
-  'All',
-  'Code Assistant',
-  'Data Analysis',
-  'Content Creation',
-  'Research',
-  'Other'
+  { id: 'all', name: 'All Categories' },
+  { id: 'Language', name: 'Language' },
+  { id: 'Image', name: 'Image' },
+  { id: 'Development', name: 'Development' },
+  { id: 'Data', name: 'Data Analysis' },
+  { id: 'Content', name: 'Content Creation' }
 ];
 
-export function FilterBar({ onFilterChange, className }: FilterBarProps) {
-  const handleCategoryChange = (category: string) => {
-    onFilterChange({
-      category,
-      minPrice: 0,
-      maxPrice: 1
-    });
-  };
-
-  const handlePriceRangeChange = (min: number, max: number) => {
-    onFilterChange({
-      category: 'All',
-      minPrice: min,
-      maxPrice: max
-    });
-  };
-
+export function FilterBar({
+  selectedCategory,
+  onCategoryChange,
+  priceRange,
+  onPriceRangeChange,
+  className
+}: FilterBarProps) {
   return (
-    <div className={clsx('space-y-4', className)}>
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Categories</h3>
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => handleCategoryChange(category)}
-              className="px-3 py-1 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors"
-            >
-              {category}
-            </button>
+    <div className={clsx('flex flex-col md:flex-row gap-4', className)}>
+      <div className="flex-1">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Category
+        </label>
+        <select
+          value={selectedCategory}
+          onChange={(e) => onCategoryChange(e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          {categories.map(category => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
 
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Price Range (ETH)</h3>
-        <div className="flex items-center gap-4">
+      <div className="flex-1">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Price Range (ETH)
+        </label>
+        <div className="flex items-center gap-2">
           <input
             type="number"
+            value={priceRange[0]}
+            onChange={(e) => onPriceRangeChange([Number(e.target.value), priceRange[1]])}
             min="0"
             step="0.01"
-            placeholder="Min"
-            onChange={(e) => handlePriceRangeChange(Number(e.target.value), 1)}
-            className="w-24 px-2 py-1 border border-gray-300 rounded"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <span>to</span>
+          <span className="text-gray-500">to</span>
           <input
             type="number"
+            value={priceRange[1]}
+            onChange={(e) => onPriceRangeChange([priceRange[0], Number(e.target.value)])}
             min="0"
             step="0.01"
-            placeholder="Max"
-            onChange={(e) => handlePriceRangeChange(0, Number(e.target.value))}
-            className="w-24 px-2 py-1 border border-gray-300 rounded"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </div>
